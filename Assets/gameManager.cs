@@ -6,7 +6,15 @@ using UnityEngine.UI;
 public class gameManager : MonoBehaviour
 {
 
+    //las usamos para actualizar el valor en el script objetivo
+    float walkSpeedMax = 0.15f;                 // Default walk speed.
+    float runSpeedMax = 1.0f;                   // Default run speed.
+    float sprintSpeedMax = 2.0f;
+    public MoveBehaviour moveBehaviuorScript;
+
+
     public Scrollbar barraStamina;
+    [SerializeField]
     private float tiempoBarra;
     public float tiempoBarraMaximo = 4;
 
@@ -40,7 +48,24 @@ public class gameManager : MonoBehaviour
         panelInventario.SetActive(false);
         tiempoBarra = 0f;
         barraStamina.size = 1f;
-        
+
+
+
+
+        //almacenamos variables que queremos modificar
+        walkSpeedMax = moveBehaviuorScript.walkSpeed;                 // Default walk speed.
+        runSpeedMax = moveBehaviuorScript.runSpeed;                   // Default run speed.
+        sprintSpeedMax = moveBehaviuorScript.sprintSpeed;
+
+
+
+
+        StartCoroutine(StamineTimer());
+
+
+
+
+
     }
 
     // Update is called once per frame
@@ -64,21 +89,60 @@ public class gameManager : MonoBehaviour
 
 
         //disminuye progresivamente la barra de estamina
-        if (barraStamina.size > 0)
-        {
-            tiempoBarra += Time.deltaTime;
-            barraStamina.size = (1 - tiempoBarra / tiempoBarraMaximo);
-            print("tiempobarra: " + tiempoBarra);
-
-        }
+       
         
 
     }
 
+    //controla el deslizamiento de la barra
+    IEnumerator StamineTimer()
+    {
+
+        while (true)
+        {
+            if (barraStamina.size > 0)
+            {
+                tiempoBarra += Time.deltaTime;
+
+
+
+                barraStamina.size = (1 - (tiempoBarra / tiempoBarraMaximo));
+                print("tiempobarra: " + tiempoBarra);
+
+
+                if (barraStamina.size > 0.2f)//un mínimo de velocidad
+                {
+
+                    moveBehaviuorScript.walkSpeed = barraStamina.size * walkSpeedMax;
+                    moveBehaviuorScript.runSpeed = barraStamina.size * runSpeedMax;
+                    moveBehaviuorScript.sprintSpeed = barraStamina.size * sprintSpeedMax;
+
+                }
+                
+            }
+            yield return null;
+        }
+
+    }
+
+
+
+
     public void recargaStamina(float valor)
     {
-        tiempoBarra = 0;
-        barraStamina.size += valor;
+
+
+        tiempoBarra = tiempoBarra - (valor * tiempoBarraMaximo);
+
+
+
+        if (tiempoBarra<0)
+        {
+            tiempoBarra = 0;
+        }
+
+        //tiempoBarra = tiempoBarraMaximo - (tiempoBarraMaximo * barraStamina.size);
+       // barraStamina.size += valor;
 
 
 
