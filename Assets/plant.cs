@@ -75,7 +75,7 @@ public class plant : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             print("Colisión vegetal con Player");
-            manager.GetComponent<gameManager>().recargaStamina(valorStamine);
+            manager.GetComponent<gameManager>().recargaStamina2(valorStamine);
             Destroy(gameObject);
         }
     }

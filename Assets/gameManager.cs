@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class gameManager : MonoBehaviour
 {
+
+    public string escenaTienda;//nombre literal de la escena
+    public datosPersistentes persistenData;//script que contiene los datos que persisten
 
     //las usamos para actualizar el valor en el script objetivo
     float walkSpeedMax = 0.15f;                 // Default walk speed.
@@ -43,6 +47,18 @@ public class gameManager : MonoBehaviour
 
     public bool puedePlantar = false;
 
+
+    public void cargaTienda()
+    {
+
+        persistenData.Stamine = barraStamina.size;
+        persistenData.positionPlayer = player.transform.position;
+        SceneManager.LoadScene(escenaTienda);
+
+
+
+    }
+
     void Start()
     {
         panelInventario.SetActive(false);
@@ -60,7 +76,7 @@ public class gameManager : MonoBehaviour
 
 
 
-        StartCoroutine(StamineTimer());
+        StartCoroutine(StamineTimer2());
 
 
 
@@ -95,19 +111,43 @@ public class gameManager : MonoBehaviour
     }
 
     //controla el deslizamiento de la barra
-    IEnumerator StamineTimer()
+    //IEnumerator StamineTimer()
+    //{
+
+    //    while (true)
+    //    {
+    //        if (barraStamina.size > 0)
+    //        {
+    //            tiempoBarra += Time.deltaTime;
+
+
+
+    //            barraStamina.size = (1 - (tiempoBarra / tiempoBarraMaximo));
+    //            print("tiempobarra: " + tiempoBarra);
+
+
+    //            if (barraStamina.size > 0.2f)//un mínimo de velocidad
+    //            {
+
+    //                moveBehaviuorScript.walkSpeed = barraStamina.size * walkSpeedMax;
+    //                moveBehaviuorScript.runSpeed = barraStamina.size * runSpeedMax;
+    //                moveBehaviuorScript.sprintSpeed = barraStamina.size * sprintSpeedMax;
+
+    //            }
+                
+    //        }
+    //        yield return null;
+    //    }
+
+    //}
+    IEnumerator StamineTimer2()
     {
 
         while (true)
         {
             if (barraStamina.size > 0)
             {
-                tiempoBarra += Time.deltaTime;
-
-
-
-                barraStamina.size = (1 - (tiempoBarra / tiempoBarraMaximo));
-                print("tiempobarra: " + tiempoBarra);
+                barraStamina.size -= Time.deltaTime / tiempoBarraMaximo;
 
 
                 if (barraStamina.size > 0.2f)//un mínimo de velocidad
@@ -118,8 +158,10 @@ public class gameManager : MonoBehaviour
                     moveBehaviuorScript.sprintSpeed = barraStamina.size * sprintSpeedMax;
 
                 }
-                
+
             }
+           
+            
             yield return null;
         }
 
@@ -127,27 +169,34 @@ public class gameManager : MonoBehaviour
 
 
 
-
-    public void recargaStamina(float valor)
+    public void recargaStamina2(float valor)
     {
 
-
-        tiempoBarra = tiempoBarra - (valor * tiempoBarraMaximo);
-
-
-
-        if (tiempoBarra<0)
-        {
-            tiempoBarra = 0;
-        }
-
-        //tiempoBarra = tiempoBarraMaximo - (tiempoBarraMaximo * barraStamina.size);
-       // barraStamina.size += valor;
-
+        barraStamina.size += valor;
 
 
 
     }
+    //public void recargaStamina(float valor)
+    //{
+
+
+    //    tiempoBarra = tiempoBarra - (valor * tiempoBarraMaximo);
+
+
+
+    //    if (tiempoBarra < 0)
+    //    {
+    //        tiempoBarra = 0;
+    //    }
+
+    //    //tiempoBarra = tiempoBarraMaximo - (tiempoBarraMaximo * barraStamina.size);
+    //    // barraStamina.size += valor;
+
+
+
+
+    //}
 
 
 
