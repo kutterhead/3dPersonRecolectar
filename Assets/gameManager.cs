@@ -97,7 +97,8 @@ public class gameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
 
-            
+            //ponerUnaPlanta(0);
+
             panelInventario.SetActive(!panelInventario.activeSelf);
             scriptCam.enabled = !panelInventario.activeSelf;
             bh.enabled = !panelInventario.activeSelf;
@@ -105,8 +106,6 @@ public class gameManager : MonoBehaviour
 
 
         //disminuye progresivamente la barra de estamina
-       
-        
 
     }
 
@@ -204,7 +203,7 @@ public class gameManager : MonoBehaviour
     public void ponerUnaPlanta(int indicePlanta)
     {
         print("planta?");
-        if (puedePlantar)//esta dentro del áre dee plantar
+        if (puedePlantar)//esta dentro del área de plantar
         {
             if (numeroPlantas[indicePlanta]>0)
             {
