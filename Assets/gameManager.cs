@@ -9,6 +9,8 @@ public class gameManager : MonoBehaviour
 
     public string escenaTienda;//nombre literal de la escena
     public datosPersistentes persistenData;//script que contiene los datos que persisten
+    public int saldo;
+
 
     //las usamos para actualizar el valor en el script objetivo
     float walkSpeedMax = 0.15f;                 // Default walk speed.
@@ -51,12 +53,23 @@ public class gameManager : MonoBehaviour
     public void cargaTienda()
     {
 
+
+
+
         persistenData.Stamine = barraStamina.size;
-        persistenData.positionPlayer = player.transform.position;
+
+
+        persistenData.positionPlayer = player.transform.position + player.transform.forward * 2;
+        persistenData.saldo = saldo;//copiamos el saldo a los datos persistentes
         SceneManager.LoadScene(escenaTienda);
 
 
 
+    }
+    private void Awake()
+    {
+        GameObject objetoPersistente = GameObject.FindGameObjectWithTag("datosPersistentes");
+        persistenData = objetoPersistente.GetComponent<datosPersistentes>();
     }
 
     void Start()
@@ -67,6 +80,9 @@ public class gameManager : MonoBehaviour
 
 
 
+       
+
+
 
         //almacenamos variables que queremos modificar
         walkSpeedMax = moveBehaviuorScript.walkSpeed;                 // Default walk speed.
@@ -75,7 +91,12 @@ public class gameManager : MonoBehaviour
 
 
 
+        saldo = persistenData.GetComponent<datosPersistentes>().saldo;
+        player.transform.position = persistenData.GetComponent<datosPersistentes>().positionPlayer;
 
+
+
+        //StartCoroutine(leedata());
         StartCoroutine(StamineTimer2());
 
 
@@ -83,6 +104,19 @@ public class gameManager : MonoBehaviour
 
 
     }
+
+    IEnumerator leedata()
+    {
+
+        yield return null;
+        //leemos datos persistentes
+        saldo = persistenData.GetComponent<datosPersistentes>().saldo;
+        player.transform.position = persistenData.GetComponent<datosPersistentes>().positionPlayer;
+
+
+    }
+
+
 
     // Update is called once per frame
     void Update()

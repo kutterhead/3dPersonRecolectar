@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using UnityEngine.SceneManagement;
 using TMPro;
 public class tiendaManager : MonoBehaviour
 {
 
     public GameObject persistentData;//script usado para pasar datos entre escenas
-
+    public string nombreEscenaRetorno;
     // Start is called before the first frame update
 
     public TextMeshProUGUI infoText;
@@ -33,31 +35,27 @@ public class tiendaManager : MonoBehaviour
     void Start()
     {
         
-
-
         panelConfirma.SetActive(false);
 
-
-    carroCompra = 0;//el carro empieza valiendo cero
+        carroCompra = 0;//el carro empieza valiendo cero
 
         //esta variable seria asignada al cargar la escena
-        saldo = 100;
+
+        saldo = persistentData.GetComponent<datosPersistentes>().saldo;
+
+        //saldo = 100;
 
 
 
         saldoText.text = saldo.ToString() + " €";
         
-
     }
 
 
     public void SumarCarro(int valor)
     {
-       
-
 
         //sólo es texto para visualizar
-
 
         if (carroCompra == 0)
         {
@@ -96,8 +94,6 @@ public class tiendaManager : MonoBehaviour
     }
 
 
-
-
     public void comprarCarro()
     {
         if (carroCompra <= saldo)
@@ -114,26 +110,20 @@ public class tiendaManager : MonoBehaviour
         {
             infoText.text = "No se ha podido realizar la compra ,saldo insuficiente.";
 
-
         }
 
-
     }
-
-
 
 
     public void escribeTextoMensaje(string mensaje)
     {
         infoText.text = mensaje;
 
-
     }
 
     public void borraTextoMensaje()
     {
         infoText.text = "";
-
     }
 
     public void escribeDatosPersistentes()
@@ -146,4 +136,12 @@ public class tiendaManager : MonoBehaviour
         //persistentData.Stamine = 
 
     }
+
+    public void salirTienda()
+    {
+
+        SceneManager.LoadScene(nombreEscenaRetorno);
+
+    }
+
 }
