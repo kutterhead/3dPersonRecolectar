@@ -91,8 +91,8 @@ public class gameManager : MonoBehaviour
 
 
 
-        saldo = persistenData.GetComponent<datosPersistentes>().saldo;
-        player.transform.position = persistenData.GetComponent<datosPersistentes>().positionPlayer;
+        saldo = persistenData.saldo;
+        player.transform.position = persistenData.positionPlayer;
 
 
 

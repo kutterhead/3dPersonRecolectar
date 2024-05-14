@@ -16,6 +16,10 @@ public class plant : MonoBehaviour
 
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         manager = GameObject.FindGameObjectWithTag("gameManager");
