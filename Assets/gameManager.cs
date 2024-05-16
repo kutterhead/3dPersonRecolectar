@@ -11,6 +11,15 @@ public class gameManager : MonoBehaviour
     public datosPersistentes persistenData;//script que contiene los datos que persisten
     public int saldo;
 
+    public Transform limiteI;
+    public Transform limiteD;
+    public Transform limiteS;
+    public Transform limiteA;
+    public Transform origenMonedas;
+    public GameObject prefabMoneda;
+
+
+
 
     //las usamos para actualizar el valor en el script objetivo
     float walkSpeedMax = 0.15f;                 // Default walk speed.
@@ -95,10 +104,10 @@ public class gameManager : MonoBehaviour
         player.transform.position = persistenData.positionPlayer;
 
 
-
+        StopAllCoroutines();
         //StartCoroutine(leedata());
         StartCoroutine(StamineTimer2());
-
+        StartCoroutine(lanzaMoneda());
 
 
 
@@ -279,8 +288,18 @@ public class gameManager : MonoBehaviour
 
     }
 
+    IEnumerator lanzaMoneda()
+    {
+        while (true)
+        {
+            Instantiate(prefabMoneda, origenMonedas.position, origenMonedas.rotation);
+            yield return new WaitForSeconds(5f);
+
+        }
 
 
+    }
+  
 
 
 }

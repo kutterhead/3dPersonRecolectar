@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class plant : MonoBehaviour
 {
+    [SerializeField]
     private GameObject manager;
 
 
@@ -23,7 +24,11 @@ public class plant : MonoBehaviour
     void Start()
     {
         manager = GameObject.FindGameObjectWithTag("gameManager");
+
+
+        StopAllCoroutines();
         StartCoroutine(crecerPlanta());
+        
     }
 
    
@@ -79,6 +84,12 @@ public class plant : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             print("Colisión vegetal con Player");
+
+            if (manager == null)//si perdió al manager por cambio de escena lo recaptura
+            {
+                manager = GameObject.FindGameObjectWithTag("gameManager");
+            }
+
             manager.GetComponent<gameManager>().recargaStamina2(valorStamine);
             Destroy(gameObject);
         }
